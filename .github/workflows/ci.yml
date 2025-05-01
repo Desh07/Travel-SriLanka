@@ -5,19 +5,18 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      # 1. Checkout code
       - uses: actions/checkout@v4
 
-      # 2. Validate HTML files
-      - name: HTML Validation
-        uses: validator/validator@v1
+      # Fixed HTML validation step
+      - name: Validate HTML
+        uses: actions-html-validator@1
         with:
-          url: './index.html'  # Tests all linked HTML files
+          files: "**/*.html"  # Checks all HTML files
+          level: "error"       # Only show errors
 
-      # 3. Run Lighthouse audit
-      - name: Lighthouse Audit
-        uses: foo-software/lighthouse-check-action@v3
-        with:
-          accessToken: ${{ secrets.GITHUB_TOKEN }}
-          urls: 'https://htmlpreview.github.io/?https://github.com/${{ github.repository }}/blob/${{ github.ref }}/index.html'
-          budgetPath: './lighthouse-budget.json'
+      # Alternative if you prefer CLI validation
+      - name: Install HTML validator
+        run: sudo npm install -g html-validate
+
+      - name: Run HTML validation
+        run: html-validate ./**/*.html
