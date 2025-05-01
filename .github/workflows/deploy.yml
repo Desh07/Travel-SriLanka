@@ -6,11 +6,14 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Crucial permission
     steps:
       - uses: actions/checkout@v4
       
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}  # Auto-generated token
           publish_dir: ./
+          keep_files: false  # Clean old files
