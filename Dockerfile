@@ -1,16 +1,11 @@
-# Production image
+# Use the official Nginx image as a base
 FROM nginx:alpine
 
-# Copy all static files (HTML/CSS/JS/images)
+# Copy your website files to the Nginx web server directory
 COPY . /usr/share/nginx/html
 
-# Copy custom Nginx config (optional but recommended)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-# Health check (optional)
-HEALTHCHECK --interval=30s --timeout=3s \
-  CMD wget --quiet --tries=1 --spider http://localhost || exit 1
-
-# Expose port 80 and start Nginx
+# Expose port 80 for web traffic
 EXPOSE 80
+
+# Start Nginx when the container runs
 CMD ["nginx", "-g", "daemon off;"]
