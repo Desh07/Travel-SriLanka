@@ -2,19 +2,30 @@ name: CI Pipeline
 on: [push, pull_request]
 
 jobs:
-  test:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      # Fixed HTML validation step
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: docker build -t travel-srilanka .
+
+      - name: Test container
+        run: |
+          docker run -d --name test-container -p 80:80 travel-srilanka
+          sleep 5
+          curl -f http://localhost || (docker logs test-container && exit 1)
+          docker stop test-container
+
       - name: Validate HTML
         uses: actions-html-validator@1
         with:
-          files: "**/*.html"  # Checks all HTML files
-          level: "error"       # Only show errors
+          files: "**/*.html"
+          level: "error"
 
-      # Alternative if you prefer CLI validation
       - name: Install HTML validator
         run: sudo npm install -g html-validate
 
