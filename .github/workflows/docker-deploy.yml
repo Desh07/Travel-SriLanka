@@ -29,6 +29,6 @@ jobs:
         with:
           push: true
           tags: |
-            Desh07/travel-srilanka:latest
-            Desh07/travel-srilanka:${{ github.sha }}
+            deshanth/travel-srilanka:latest
+            deshanth/travel-srilanka:${{ github.sha }}
           platforms: linux/amd64,linux/arm64
