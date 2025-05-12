@@ -14,7 +14,7 @@ jobs:
         run: |
               echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
                 docker logout  # Clean up
-      - run: docker push deshanth/travel-srilanka:latest
+     
 
       - name: Build Docker image
         run: docker build -t travel-srilanka .
